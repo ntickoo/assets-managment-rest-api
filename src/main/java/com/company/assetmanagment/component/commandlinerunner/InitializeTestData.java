@@ -20,7 +20,6 @@ import lombok.extern.log4j.Log4j2;
 public class InitializeTestData implements CommandLineRunner
 {
 	
-	@Autowired
 	private final AssetRepository assetRepository;
 	
 	public InitializeTestData(AssetRepository assetRepository)
