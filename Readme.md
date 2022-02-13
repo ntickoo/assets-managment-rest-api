@@ -22,7 +22,7 @@ To run use the command below.
 
     docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8080:8080 tickoon/assetmanagment-server-rest-api
 
-Once the container is running, use the rest end points by below url - 
+Swagger/Open API Specs: Once the container is running, use the rest end points by below url - 
 
     http://localhost:8080/swagger-ui/index.html
 
