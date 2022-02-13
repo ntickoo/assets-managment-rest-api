@@ -32,11 +32,18 @@ import com.company.assetmanagment.data.request.GetAssetsCriteria;
 import com.company.assetmanagment.exception.BusinessException;
 import com.company.assetmanagment.service.AssetService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @RestController
 @RequestMapping(path = {"/api/v1/assets"}, produces = APPLICATION_JSON_VALUE)
+@Tag(name = "Asset", description = "API Endpoints for managing Assets.")
 public class AssetController
 {
 	private static final String ID = "id";
@@ -52,6 +59,20 @@ public class AssetController
 	}
 	
 	
+	
+	@Operation
+	(
+	    summary = "Get an Asset by id",description = "Get an Asset by id",tags = { "Asset" },
+	    responses = {
+	        @ApiResponse(
+	            description = "Success",
+	            responseCode = "200",
+	            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssetResponseDto.class))
+	        ),
+	        @ApiResponse(description = "Not found", responseCode = "404", content = @Content),
+	        @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+	    }
+    )
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<AssetResponseDto> getAsset(@PathVariable(value = ID) Long id)
 	{
@@ -61,6 +82,18 @@ public class AssetController
 		return  ResponseEntity.ok(dtoMapper.assetToAssetResponseDto(result));
 	}
 	
+	@Operation
+	(
+	    summary = "Get all assets",description = "Get all assets. Supports Sorting. Default sort by id.",tags = { "Asset" },
+	    responses = {
+	        @ApiResponse(
+	            description = "Success",
+	            responseCode = "200",
+	            content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = AssetResponseDto.class)))
+	        ),
+	        @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+	    }
+    )
 	@GetMapping
 	public ResponseEntity<List<AssetResponseDto>> getAssets(@Valid GetAssetsCriteria assetCriteria)
 	{
@@ -78,6 +111,19 @@ public class AssetController
 					  );
 	}
 	
+	@Operation
+	(
+	    summary = "Create an asset",description = "Create an asset",tags = { "Asset" },
+	    responses = {
+	        @ApiResponse(
+	            description = "Success",
+	            responseCode = "201",
+	            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssetResponseDto.class))
+	        ),
+	        @ApiResponse(description = "Bad request", responseCode = "400", content = @Content),
+	        @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+	    }
+    )
 	@PostMapping(consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<AssetResponseDto> createAsset(@Valid @RequestBody AssetIncomingDto orderIncomingDto)
 	{
@@ -91,6 +137,21 @@ public class AssetController
 					  );
 	}
 	
+	
+	@Operation
+	(
+	    summary = "Replace an asset with new details.",description = "Replace an asset with new details.",tags = { "Asset" },
+	    responses = {
+	        @ApiResponse(
+	            description = "Success",
+	            responseCode = "200",
+	            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssetResponseDto.class))
+	        ),
+	        @ApiResponse(description = "Bad request", responseCode = "400", content = @Content),
+	        @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+	        @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+	    }
+    )
 	@PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<AssetResponseDto> updateAsset(@PathVariable(value = ID) Long id, @Valid @RequestBody AssetIncomingDto orderIncomingDto)
 	{
@@ -103,6 +164,20 @@ public class AssetController
 					  );
 	}
 	
+	@Operation
+	(
+	    summary = "Update an attribute of an asset.",description = "Update an attribute of an asset.",tags = { "Asset" },
+	    responses = {
+	        @ApiResponse(
+	            description = "Success",
+	            responseCode = "200",
+	            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssetResponseDto.class))
+	        ),
+	        @ApiResponse(description = "Bad request", responseCode = "400", content = @Content),
+	        @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+	        @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+	    }
+    )
 	@PatchMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE)
 	public ResponseEntity<AssetResponseDto> partiallyUpdateAsset(@PathVariable(value = ID) Long id, @RequestBody Map<String, Object> fields)
 	{
@@ -129,6 +204,20 @@ public class AssetController
 						  );
 	}
 	
+	
+	@Operation
+	(
+	    summary = "Delete an asset.",description = "Delete an asset.",tags = { "Asset" },
+	    responses = {
+	        @ApiResponse(
+	            description = "Success",
+	            responseCode = "204",
+	            content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssetResponseDto.class))
+	        ),
+	        @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+	        @ApiResponse(description = "Internal error", responseCode = "500", content = @Content)
+	    }
+    )
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable(value = ID) Long id)
 	{

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.data.domain.Sort;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +19,7 @@ public class RequestParams implements SortableRequestParams
 
 	private String sortColumn;
 
+	@Hidden
 	@Override
 	public Sort getSortCriteria()
 	{
